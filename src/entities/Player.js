@@ -3,18 +3,20 @@ import Phaser from 'phaser';
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     // Generate a temporary red square texture for the player
-    let graphics = scene.add.graphics();
-    graphics.fillStyle(0xff0000);
-    graphics.fillRect(0, 0, 32, 32);
-    graphics.generateTexture('playerTexture', 32, 32);
-    graphics.destroy();
+    if (!scene.textures.exists('playerTexture')) {
+      let graphics = scene.add.graphics();
+      graphics.fillStyle(0xff0000);
+      graphics.fillRect(0, 0, 32, 32);
+      graphics.generateTexture('playerTexture', 32, 32);
+      graphics.destroy();
+    }
 
     super(scene, x, y, 'playerTexture');
 
-    this.scene = scene;
-    
-    // Set up physics properties
-    scene.physics.world.enable(this);
+    // Add to scene display and physics
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
+
     this.setCollideWorldBounds(true);
     // Slightly smaller hitbox for better movement through tight spaces
     this.body.setSize(24, 24);
