@@ -162,10 +162,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   /** @returns {string|null} */
   getRawInput() {
-    if (this.cursors.up.isDown || (this.wasd.W && this.wasd.W.isDown)) return 'up';
-    if (this.cursors.down.isDown || (this.wasd.S && this.wasd.S.isDown)) return 'down';
-    if (this.cursors.left.isDown || (this.wasd.A && this.wasd.A.isDown)) return 'left';
-    if (this.cursors.right.isDown || (this.wasd.D && this.wasd.D.isDown)) return 'right';
+    const touch = (typeof window !== 'undefined' && window.__TOUCH_INPUT__) || {};
+    if (this.cursors.up.isDown    || (this.wasd.W && this.wasd.W.isDown) || touch.up)    return 'up';
+    if (this.cursors.down.isDown  || (this.wasd.S && this.wasd.S.isDown) || touch.down)  return 'down';
+    if (this.cursors.left.isDown  || (this.wasd.A && this.wasd.A.isDown) || touch.left)  return 'left';
+    if (this.cursors.right.isDown || (this.wasd.D && this.wasd.D.isDown) || touch.right) return 'right';
     return null;
   }
 

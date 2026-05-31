@@ -2,27 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Pokémon GBA Revamped</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html {
-      margin: 0;
-      padding: 0;
-      background-color: #1a1a1a;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #111;
+      height: 100%;
+      overflow: hidden;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
     #app {
+      width: 100%;
       display: flex;
       justify-content: center;
+      align-items: flex-start;
+      padding-top: 10px;
+    }
+    #app canvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    /* ====== Touch Controls ====== */
+    #touch-controls {
+      position: fixed;
+      bottom: 12px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 24px;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    /* D-Pad */
+    #dpad {
+      display: flex;
+      flex-direction: column;
       align-items: center;
+      pointer-events: auto;
+    }
+    .dpad-row {
+      display: flex;
+      align-items: center;
+    }
+    .dpad-btn {
+      width: 52px;
+      height: 52px;
+      border: 2px solid rgba(255,255,255,0.25);
+      background: rgba(30,30,55,0.88);
+      color: rgba(255,255,255,0.85);
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      pointer-events: auto;
+      transition: background 0.05s;
+    }
+    .dpad-btn:active, .dpad-btn.pressed {
+      background: rgba(70,70,140,0.95);
+      border-color: rgba(255,255,255,0.6);
+      color: #fff;
+    }
+    #dpad-up    { border-radius: 14px 14px 0 0; }
+    #dpad-down  { border-radius: 0 0 14px 14px; }
+    #dpad-left  { border-radius: 14px 0 0 14px; }
+    #dpad-right { border-radius: 0 14px 14px 0; }
+    .dpad-center {
+      width: 52px;
+      height: 52px;
+      background: rgba(20,20,40,0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* A Button */
+    #action-btn {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.35);
+      background: radial-gradient(circle at 35% 35%, rgba(230,70,70,0.92), rgba(160,30,30,0.92));
+      color: #fff;
+      font-size: 26px;
+      font-weight: bold;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      pointer-events: auto;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5), inset 0 -2px 4px rgba(0,0,0,0.3);
+      transition: transform 0.05s;
+      margin-bottom: 30px;
+    }
+    #action-btn:active, #action-btn.pressed {
+      background: radial-gradient(circle at 35% 35%, rgba(255,100,100,0.95), rgba(200,50,50,0.95));
+      border-color: rgba(255,255,255,0.7);
+      transform: scale(0.93);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5), inset 0 -1px 2px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
+
+  <!-- Virtual Touch Controls -->
+  <div id="touch-controls">
+    <div id="dpad">
+      <button id="dpad-up" class="dpad-btn">▲</button>
+      <div class="dpad-row">
+        <button id="dpad-left" class="dpad-btn">◄</button>
+        <div class="dpad-center"></div>
+        <button id="dpad-right" class="dpad-btn">►</button>
+      </div>
+      <button id="dpad-down" class="dpad-btn">▼</button>
+    </div>
+    <button id="action-btn">A</button>
+  </div>
+
+  <script>
+    // Global touch input state — read by Phaser game code
+    window.__TOUCH_INPUT__ = { up: false, down: false, left: false, right: false, action: false };
+
+    function wire(id, key) {
+      var btn = document.getElementById(id);
+      function on(e)  { if(e)e.preventDefault(); window.__TOUCH_INPUT__[key]=true;  btn.classList.add('pressed'); }
+      function off(e) { if(e)e.preventDefault(); window.__TOUCH_INPUT__[key]=false; btn.classList.remove('pressed'); }
+      btn.addEventListener('touchstart',  on,  {passive:false});
+      btn.addEventListener('touchend',    off, {passive:false});
+      btn.addEventListener('touchcancel', off);
+      btn.addEventListener('mousedown', on);
+      btn.addEventListener('mouseup',   off);
+      btn.addEventListener('mouseleave',off);
+    }
+    wire('dpad-up','up');
+    wire('dpad-down','down');
+    wire('dpad-left','left');
+    wire('dpad-right','right');
+    wire('action-btn','action');
+  </script>
+
   <script type="module" src="./src/main.js"></script>
 </body>
 </html>

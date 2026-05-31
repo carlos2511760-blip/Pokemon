@@ -29,6 +29,14 @@ saveService.loadGame().then((loaded) => {
     height: 600,
     parent: 'app',
     pixelArt: true,
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    input: {
+      keyboard: true,
+      touch: true,
+    },
     physics: {
       default: 'arcade',
       arcade: {
