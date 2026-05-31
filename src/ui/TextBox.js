@@ -58,8 +58,8 @@ export default class TextBox {
     });
 
     // --- Input Keys ---
-    this.spaceKey = scene.input.keyboard.addKey('SPACE');
-    this.enterKey = scene.input.keyboard.addKey('ENTER');
+    this.spaceKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.enterKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     
     // Also allow clicking to advance
     scene.input.on('pointerdown', () => {
@@ -138,10 +138,15 @@ export default class TextBox {
     }
 
     // Advance on Space/Enter
-    if (Phaser.Input.Keyboard.JustDown(this.spaceKey) ||
-        Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+    const spaceDown = this.spaceKey && this.spaceKey.isDown;
+    const enterDown = this.enterKey && this.enterKey.isDown;
+
+    if ((spaceDown && !this.lastSpaceDown) || (enterDown && !this.lastEnterDown)) {
       this.advance();
     }
+
+    this.lastSpaceDown = spaceDown;
+    this.lastEnterDown = enterDown;
   }
 
   /**

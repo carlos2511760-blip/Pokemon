@@ -39,7 +39,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     // Input setup
     this.cursors = scene.input.keyboard.createCursorKeys();
-    this.wasd = scene.input.keyboard.addKeys('W,S,A,D');
+    this.wasd = {
+      W: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+      S: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+      A: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+      D: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+    };
     
     // Predictive Input Buffer
     this.inputBuffer = null; // { direction, timestamp }
@@ -157,10 +162,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
   /** @returns {string|null} */
   getRawInput() {
-    if (this.cursors.up.isDown || this.wasd.W.isDown) return 'up';
-    if (this.cursors.down.isDown || this.wasd.S.isDown) return 'down';
-    if (this.cursors.left.isDown || this.wasd.A.isDown) return 'left';
-    if (this.cursors.right.isDown || this.wasd.D.isDown) return 'right';
+    if (this.cursors.up.isDown || (this.wasd.W && this.wasd.W.isDown)) return 'up';
+    if (this.cursors.down.isDown || (this.wasd.S && this.wasd.S.isDown)) return 'down';
+    if (this.cursors.left.isDown || (this.wasd.A && this.wasd.A.isDown)) return 'left';
+    if (this.cursors.right.isDown || (this.wasd.D && this.wasd.D.isDown)) return 'right';
     return null;
   }
 

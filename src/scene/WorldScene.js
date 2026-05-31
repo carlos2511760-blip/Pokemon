@@ -479,10 +479,15 @@ export default class WorldScene extends Phaser.Scene {
     this.player.update(time, delta);
 
     // Check for NPC interaction on key press
-    if (Phaser.Input.Keyboard.JustDown(this.interactKey) ||
-        Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+    const interactDown = this.interactKey && this.interactKey.isDown;
+    const spaceDown = this.spaceKey && this.spaceKey.isDown;
+
+    if ((interactDown && !this.lastInteractDown) || (spaceDown && !this.lastSpaceDown)) {
       this.checkInteraction();
     }
+
+    this.lastInteractDown = interactDown;
+    this.lastSpaceDown = spaceDown;
   }
 
   /**
@@ -545,7 +550,8 @@ export default class WorldScene extends Phaser.Scene {
     this.time.delayedCall(500, () => {
       this.scene.launch('BattleScene', {
         wildPokemon: wildPokemon,
-        playerPokemon: this.playerPokemon
+        playerPokemon: this.playerPokemon,
+        parentScene: 'WorldScene'
       });
       this.scene.pause();
     });

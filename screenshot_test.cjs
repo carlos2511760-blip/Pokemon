@@ -3,6 +3,9 @@ const puppeteer = require('puppeteer');
 (async () => {
   const browser = await puppeteer.launch({ headless: 'new' });
   const page = await browser.newPage();
+  
+  // Set a standard game resolution size (e.g. 800x600)
+  await page.setViewport({ width: 800, height: 600 });
 
   page.on('console', msg => {
     if (msg.type() === 'error') {
@@ -16,10 +19,11 @@ const puppeteer = require('puppeteer');
     console.log('PAGE ERROR:', error.message);
   });
 
-  await page.goto('http://localhost:5173');
+  await page.goto('http://localhost:5174/Pokemon/');
 
   console.log('Waiting for Phaser to load...');
   await new Promise(resolve => setTimeout(resolve, 3000));
+  await page.screenshot({ path: 'screenshot_before_dialog.png' });
 
   // Get TextBox status before keypress
   let state = await page.evaluate(() => {
@@ -40,6 +44,8 @@ const puppeteer = require('puppeteer');
     await page.keyboard.up('Space');
     await new Promise(resolve => setTimeout(resolve, 200));
   }
+  
+  await page.screenshot({ path: 'screenshot_after_dialog.png' });
 
   state = await page.evaluate(() => {
     const scene = window.__PHASER_GAME__.scene.getScene('FacilityScene');
@@ -54,10 +60,12 @@ const puppeteer = require('puppeteer');
 
   // Try to move UP
   console.log('Moving UP...');
-  await page.keyboard.down('ArrowUp');
+  await page.keyboard.down('w'); // W key for WASD
   await new Promise(resolve => setTimeout(resolve, 400));
-  await page.keyboard.up('ArrowUp');
+  await page.keyboard.up('w');
   await new Promise(resolve => setTimeout(resolve, 400));
+  
+  await page.screenshot({ path: 'screenshot_after_move.png' });
 
   state = await page.evaluate(() => {
     const scene = window.__PHASER_GAME__.scene.getScene('FacilityScene');
@@ -68,32 +76,6 @@ const puppeteer = require('puppeteer');
     };
   });
   console.log('After moving UP:', state);
-
-  // Try to move DOWN multiple times to hit the Doormat at y:13
-  console.log('Moving DOWN to doormat...');
-  await page.keyboard.down('ArrowDown');
-  await new Promise(resolve => setTimeout(resolve, 1500)); // Should move past y=12 and hit y=13
-  await page.keyboard.up('ArrowDown');
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // Skip the "doors are sealed" dialog that should appear
-  for (let i = 0; i < 5; i++) {
-    await page.keyboard.down('Space');
-    await new Promise(resolve => setTimeout(resolve, 50));
-    await page.keyboard.up('Space');
-    await new Promise(resolve => setTimeout(resolve, 200));
-  }
-  
-  state = await page.evaluate(() => {
-    const scene = window.__PHASER_GAME__.scene.getScene('FacilityScene');
-    return {
-      x: scene.player.tileX,
-      y: scene.player.tileY,
-      isMoving: scene.player.isMoving,
-      textBoxVisible: scene.textBox.isVisible()
-    };
-  });
-  console.log('After hitting doormat:', state);
 
   await browser.close();
 })();

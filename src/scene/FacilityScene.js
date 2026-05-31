@@ -199,7 +199,7 @@ export default class FacilityScene extends Phaser.Scene {
           this.textBox.show(["[RADIO] Emergency doors are sealed.", "Restore power first!"], () => {
              this.player.isMoving = false;
              // Force player back a tile (simple bounce back)
-             this.player.targetTileY--;
+             this.player.setGridPosition(this.player.tileX, this.player.tileY - 1);
           });
         }
       }
@@ -269,6 +269,40 @@ export default class FacilityScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    // === DEBUG OVERLAY ===
+    if (!this.debugText) {
+      this.debugText = this.add.text(4, 4, '', {
+        fontSize: '8px',
+        fontFamily: 'monospace',
+        fill: '#00ff00',
+        backgroundColor: '#000000aa',
+        padding: { x: 4, y: 4 }
+      });
+      this.debugText.setScrollFactor(0);
+      this.debugText.setDepth(9999);
+    }
+
+    const cursorsExist = !!this.player.cursors;
+    const upDown = this.player.cursors ? this.player.cursors.up.isDown : 'N/A';
+    const downDown = this.player.cursors ? this.player.cursors.down.isDown : 'N/A';
+    const leftDown = this.player.cursors ? this.player.cursors.left.isDown : 'N/A';
+    const rightDown = this.player.cursors ? this.player.cursors.right.isDown : 'N/A';
+    const wDown = this.player.wasd && this.player.wasd.W ? this.player.wasd.W.isDown : 'N/A';
+    const rawInput = this.player.getRawInput();
+    const tbVisible = this.textBox ? this.textBox.isVisible() : 'N/A';
+
+    this.debugText.setText([
+      `isMoving: ${this.player.isMoving}`,
+      `phase: ${this.prologuePhase}`,
+      `tile: ${this.player.tileX},${this.player.tileY}`,
+      `textBox: ${tbVisible}`,
+      `cursors: ${cursorsExist}`,
+      `UP:${upDown} DN:${downDown} LT:${leftDown} RT:${rightDown}`,
+      `W:${wDown} rawInput:${rawInput}`,
+      `kbPlugin: ${!!this.input.keyboard}`,
+    ].join('\n'));
+    // === END DEBUG ===
+
     if (this.textBox && this.textBox.isVisible && this.textBox.isVisible()) {
       this.textBox.update(time, delta);
       return;
@@ -276,9 +310,15 @@ export default class FacilityScene extends Phaser.Scene {
 
     this.player.update(time, delta);
 
-    if (Phaser.Input.Keyboard.JustDown(this.interactKey) || Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+    const interactDown = this.interactKey && this.interactKey.isDown;
+    const spaceDown = this.spaceKey && this.spaceKey.isDown;
+
+    if ((interactDown && !this.lastInteractDown) || (spaceDown && !this.lastSpaceDown)) {
       this.handleInteraction();
     }
+
+    this.lastInteractDown = interactDown;
+    this.lastSpaceDown = spaceDown;
   }
 
   handleInteraction() {
@@ -321,7 +361,8 @@ export default class FacilityScene extends Phaser.Scene {
                 const zubat = new Pokemon(41, 3);
                 this.scene.launch('BattleScene', {
                   wildPokemon: zubat,
-                  playerPokemon: this.gameState.playerParty[0]
+                  playerPokemon: this.gameState.playerParty[0],
+                  parentScene: 'FacilityScene'
                 });
                 this.scene.pause();
                 this.player.isMoving = false;

@@ -13,6 +13,7 @@ export default class BattleScene extends Phaser.Scene {
 
   init(data) {
     this.wildPokemon = data.wildPokemon;
+    this.parentScene = data.parentScene || 'WorldScene';
     const gameState = ServiceLocator.resolve(ServiceKeys.GAME_STATE);
     this.playerPokemon = gameState.playerParty[0];
 
@@ -110,7 +111,8 @@ export default class BattleScene extends Phaser.Scene {
 
     if (this.engine.battleOver) {
       await this.sleep(1000);
-      this.scene.switch('WorldScene');
+      this.scene.stop('BattleScene');
+      this.scene.resume(this.parentScene);
     } else {
       this.dialogText.setText(`What will ${this.playerPokemon.name} do?`);
       this.isAnimating = false;
