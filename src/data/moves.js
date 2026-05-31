@@ -144,6 +144,94 @@ export const MOVES = {
     accuracy: 100,
     pp: 15,
   },
+  // --- Bug-type moves ---
+  absorb: {
+    name: 'Absorb',
+    type: 'grass',
+    category: 'special',
+    power: 20,
+    accuracy: 100,
+    pp: 25,
+  },
+  stunSpore: {
+    name: 'Stun Spore',
+    type: 'grass',
+    category: 'status',
+    power: 0,
+    accuracy: 75,
+    pp: 30,
+    effect: 'paralysis',
+  },
+  spore: {
+    name: 'Spore',
+    type: 'grass',
+    category: 'status',
+    power: 0,
+    accuracy: 100,
+    pp: 15,
+    effect: 'sleep',
+  },
+  bugBite: {
+    name: 'Bug Bite',
+    type: 'bug',
+    category: 'physical',
+    power: 60,
+    accuracy: 100,
+    pp: 20,
+  },
+  leechLife: {
+    name: 'Leech Life',
+    type: 'bug',
+    category: 'physical',
+    power: 80,
+    accuracy: 100,
+    pp: 10,
+  },
+
+  // --- Steel-type moves ---
+  metalSound: {
+    name: 'Metal Sound',
+    type: 'steel',
+    category: 'status',
+    power: 0,
+    accuracy: 85,
+    pp: 40,
+    effect: 'defense_down_2',
+  },
+  flashCannon: {
+    name: 'Flash Cannon',
+    type: 'steel',
+    category: 'special',
+    power: 80,
+    accuracy: 100,
+    pp: 10,
+  },
+
+  // --- Ground-type moves ---
+  mudSlap: {
+    name: 'Mud Slap',
+    type: 'ground',
+    category: 'special',
+    power: 20,
+    accuracy: 100,
+    pp: 10,
+  },
+  mudShot: {
+    name: 'Mud Shot',
+    type: 'ground',
+    category: 'special',
+    power: 55,
+    accuracy: 95,
+    pp: 15,
+  },
+  earthquake: {
+    name: 'Earthquake',
+    type: 'ground',
+    category: 'physical',
+    power: 100,
+    accuracy: 100,
+    pp: 10,
+  },
 };
 
 export default MOVES;

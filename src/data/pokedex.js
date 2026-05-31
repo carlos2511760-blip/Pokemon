@@ -87,6 +87,86 @@ export const POKEDEX = {
     ],
     spriteId: 25,
   },
+  // --- Projeto Aurora Starters ---
+  81: {
+    id: 81,
+    name: 'Magnemite',
+    types: ['electric', 'steel'],
+    baseStats: { hp: 25, attack: 35, defense: 70, speed: 45 },
+    learnset: [
+      { level: 1, moveId: 'tackle' },
+      { level: 1, moveId: 'thunderShock' },
+      { level: 7, moveId: 'metalSound' },
+      { level: 11, moveId: 'spark' },
+      { level: 15, moveId: 'flashCannon' },
+      { level: 21, moveId: 'thunderbolt' },
+    ],
+    spriteId: 81,
+    catchRate: 190,
+  },
+
+  46: {
+    id: 46,
+    name: 'Paras',
+    types: ['bug', 'grass'],
+    baseStats: { hp: 35, attack: 70, defense: 55, speed: 25 },
+    learnset: [
+      { level: 1, moveId: 'scratch' },
+      { level: 1, moveId: 'absorb' },
+      { level: 6, moveId: 'stunSpore' },
+      { level: 11, moveId: 'bugBite' },
+      { level: 17, moveId: 'spore' },
+      { level: 22, moveId: 'leechLife' },
+    ],
+    spriteId: 46,
+    catchRate: 190,
+  },
+
+  258: {
+    id: 258,
+    name: 'Mudkip',
+    types: ['water'],
+    baseStats: { hp: 50, attack: 70, defense: 50, speed: 40 },
+    learnset: [
+      { level: 1, moveId: 'tackle' },
+      { level: 1, moveId: 'waterGun' },
+      { level: 6, moveId: 'mudSlap' },
+      { level: 10, moveId: 'bite' },
+      { level: 15, moveId: 'mudShot' },
+      { level: 20, moveId: 'earthquake' },
+    ],
+    spriteId: 258,
+    catchRate: 45,
+  },
+
+  // --- Wild Pokemon for Facility ---
+  41: {
+    id: 41,
+    name: 'Zubat',
+    types: ['poison', 'flying'],
+    baseStats: { hp: 40, attack: 45, defense: 35, speed: 55 },
+    learnset: [
+      { level: 1, moveId: 'tackle' },
+      { level: 5, moveId: 'bite' },
+      { level: 11, moveId: 'gust' },
+    ],
+    spriteId: 41,
+    catchRate: 255,
+  },
+
+  74: {
+    id: 74,
+    name: 'Geodude',
+    types: ['rock', 'ground'],
+    baseStats: { hp: 40, attack: 80, defense: 100, speed: 20 },
+    learnset: [
+      { level: 1, moveId: 'tackle' },
+      { level: 6, moveId: 'mudSlap' },
+      { level: 11, moveId: 'mudShot' },
+    ],
+    spriteId: 74,
+    catchRate: 255,
+  },
 };
 
 export default POKEDEX;

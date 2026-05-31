@@ -60,6 +60,11 @@ export default class TextBox {
     // --- Input Keys ---
     this.spaceKey = scene.input.keyboard.addKey('SPACE');
     this.enterKey = scene.input.keyboard.addKey('ENTER');
+    
+    // Also allow clicking to advance
+    scene.input.on('pointerdown', () => {
+      this.advance();
+    });
   }
 
   /**

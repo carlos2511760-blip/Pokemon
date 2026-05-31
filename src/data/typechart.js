@@ -19,6 +19,7 @@ export const TYPE_CHART = {
     bug: 2,
     rock: 0.5,
     dragon: 0.5,
+    steel: 2,
   },
   water: {
     fire: 2,
@@ -65,6 +66,7 @@ export const TYPE_CHART = {
     bug: 0.5,
     rock: 2,
     ghost: 0,
+    steel: 2,
   },
   poison: {
     grass: 2,
@@ -72,6 +74,7 @@ export const TYPE_CHART = {
     ground: 0.5,
     rock: 0.5,
     ghost: 0.5,
+    steel: 0,
   },
   ground: {
     fire: 2,
@@ -81,6 +84,7 @@ export const TYPE_CHART = {
     flying: 0,
     bug: 0.5,
     rock: 2,
+    steel: 2,
   },
   flying: {
     electric: 0.5,
@@ -118,6 +122,14 @@ export const TYPE_CHART = {
   },
   dragon: {
     dragon: 2,
+  },
+  steel: {
+    fire: 0.5,
+    water: 0.5,
+    electric: 0.5,
+    ice: 2,
+    rock: 2,
+    steel: 0.5,
   },
 };
 

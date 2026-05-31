@@ -1,4 +1,4 @@
-import IBattleCommand from './IBattleCommand.js';
+import IBattleCommand from '../IBattleCommand.js';
 
 export default class RunCommand extends IBattleCommand {
   constructor(source, target) {

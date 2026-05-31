@@ -1,5 +1,5 @@
-import IBattleCommand from './IBattleCommand.js';
-import { getEffectiveness } from '../data/typechart.js';
+import IBattleCommand from '../IBattleCommand.js';
+import { getEffectiveness } from '../../data/typechart.js';
 
 export default class AttackCommand extends IBattleCommand {
   /**

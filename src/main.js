@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import WorldScene from './scene/WorldScene.js';
 import IndoorScene from './scene/IndoorScene.js';
 import BattleScene from './scene/BattleScene.js';
+import FacilityScene from './scene/FacilityScene.js';
 import { ServiceLocator, ServiceKeys } from './core/ServiceLocator.js';
 import { GlobalEventBus } from './core/GlobalEventBus.js';
 import GameState from './core/GameState.js';
@@ -35,8 +36,9 @@ saveService.loadGame().then((loaded) => {
         debug: false
       }
     },
-    scene: [WorldScene, IndoorScene, BattleScene]
+    scene: [FacilityScene, WorldScene, IndoorScene, BattleScene]
   };
 
   const game = new Phaser.Game(config);
+  window.game = game;
 });

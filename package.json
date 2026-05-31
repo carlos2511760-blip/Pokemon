@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "image-size": "^2.0.2",
-    "phaser": "^4.1.0"
+    "phaser": "^4.1.0",
+    "puppeteer": "^25.1.0"
   }
 }
