@@ -2,16 +2,7 @@ import Phaser from 'phaser';
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    // Generate a temporary red square texture for the player
-    if (!scene.textures.exists('playerTexture')) {
-      let graphics = scene.add.graphics();
-      graphics.fillStyle(0xff0000);
-      graphics.fillRect(0, 0, 32, 32);
-      graphics.generateTexture('playerTexture', 32, 32);
-      graphics.destroy();
-    }
-
-    super(scene, x, y, 'playerTexture');
+    super(scene, x, y, 'player');
 
     // Add to scene display and physics
     scene.add.existing(this);

@@ -9,6 +9,7 @@ export default class WorldScene extends Phaser.Scene {
   preload() {
     this.load.image('tiles', 'assets/tileset.png');
     this.load.tilemapTiledJSON('map', 'assets/tileset.json');
+    this.load.image('player', 'assets/player.png');
   }
 
   create() {
@@ -19,25 +20,39 @@ export default class WorldScene extends Phaser.Scene {
       return;
     }
 
-    const tileset = map.addTilesetImage('pokemon_tiles', 'tiles');
+    const tileset = map.addTilesetImage('tuxmon-sample-32px-extruded', 'tiles');
 
     if (!tileset) {
       console.error('Tileset not found! Name in JSON:', map.tilesets);
       return;
     }
 
-    const layer = map.createLayer('Tile Layer 1', tileset, 0, 0);
+    const belowLayer = map.createLayer('Below Player', tileset, 0, 0);
+    const worldLayer = map.createLayer('World', tileset, 0, 0);
+    const aboveLayer = map.createLayer('Above Player', tileset, 0, 0);
 
-    if (!layer) {
+    if (!worldLayer) {
       console.error('Layer not found! Layers in map:', map.layers);
       return;
     }
 
-    layer.setCollisionByProperty({ collides: true });
+    worldLayer.setCollisionByProperty({ collides: true });
 
-    this.player = new Player(this, map.widthInPixels / 2, map.heightInPixels / 2);
+    // Ensure aboveLayer renders on top of the player
+    if (aboveLayer) {
+      aboveLayer.setDepth(10);
+    }
 
-    this.physics.add.collider(this.player, layer);
+    // Spawn point from map, or center
+    const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+    const spawnX = spawnPoint ? spawnPoint.x : map.widthInPixels / 2;
+    const spawnY = spawnPoint ? spawnPoint.y : map.heightInPixels / 2;
+
+    this.player = new Player(this, spawnX, spawnY);
+    // Player depth should be below 'Above Player'
+    this.player.setDepth(5);
+
+    this.physics.add.collider(this.player, worldLayer);
 
     this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
