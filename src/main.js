@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import WorldScene from './scene/WorldScene.js';
+import IndoorScene from './scene/IndoorScene.js';
+import BattleScene from './scene/BattleScene.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -14,7 +16,7 @@ const config = {
       debug: false
     }
   },
-  scene: [WorldScene]
+  scene: [WorldScene, IndoorScene, BattleScene]
 };
 
 const game = new Phaser.Game(config);
